@@ -7,6 +7,6 @@ help :
 .PHONY: install
 install:
 	#  backend installation
-	python -m venv .env; \
+	python3 -m venv .env; \
 	. .env/bin/activate; \
-	pip install -r requirements.txt;
+	pip3 install -r requirements.txt;
