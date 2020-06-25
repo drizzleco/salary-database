@@ -2,13 +2,26 @@ import pandas as pd
 import sys
 import sqlite3
 import os
+import wget
+from xlsx2csv import Xlsx2csv
 
-# It started with a file called H-1B_Disclosure_Data_FY2019.xlsx
-# Then, I manually converted it to disclosure_2019.csv using LibreOffice Calc save as CSV
+name = sys.argv[1]
+url = sys.argv[2]
 
-csv = sys.argv[1]
-print("Reading file: " + csv)
-sheet = pd.read_csv(csv)
+# download data
+print("Downloading data for" + name)
+xlsx_path = wget.download(url, out="data/{}.xlsx".format(name))
+
+# convert to csv
+print()
+print("Converting data/{}.xlsx to data/{}.csv".format(name, name))
+csv_path = "data/{}.csv".format(name)
+Xlsx2csv(xlsx_path, outputencoding="utf-8").convert(csv_path)
+
+# save to db
+print("Saving {} to database".format(name))
+print("Reading file: " + csv_path)
+sheet = pd.read_csv(csv_path)
 
 PERSON_FIELDS = [
     "CASE_NUMBER",
