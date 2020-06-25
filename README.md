@@ -12,11 +12,11 @@
 
 To download data individually, run:
 
-`sh data/collect_data.sh [NAME OF FILE TO SAVE AS] [DOWNLOAD URL]`
+`python data/data_to_db.py [NAME OF FILE TO SAVE AS] [DOWNLOAD URL]`
 
 EX, to just download 2019 disclosure data:
 
-`sh data/collect_data.sh disclosure_2019 https://www.foreignlaborcert.doleta.gov/pdf/PerformanceData/2019/H-1B_Disclosure_Data_FY2019.xlsx`
+`python data/data_to_db.py disclosure_2019 https://www.foreignlaborcert.doleta.gov/pdf/PerformanceData/2019/H-1B_Disclosure_Data_FY2019.xlsx`
 
 ## Info
 
