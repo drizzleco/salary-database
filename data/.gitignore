@@ -1,5 +1,4 @@
-*
-*/
-!.gitignore
-!data_to_db.py
-!collect_data.sh
+*.sqlite
+*.csv
+*.xlsx
+
