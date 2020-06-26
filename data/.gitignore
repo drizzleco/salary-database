@@ -1,3 +1,4 @@
-*
-*/
-!.gitignore
+*.sqlite
+*.csv
+*.xlsx
+
