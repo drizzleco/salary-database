@@ -1,0 +1,79 @@
+{% extends 'base.html'%}
+
+{% block  content %}
+
+
+<header class="bg-info text-white">
+    <div class="container text-center">
+        <h1>Salary Database</h1>
+        <p class="lead"></p>
+    </div>
+</header>
+
+<section>
+    <div class="container my-5">
+        <h3>Search:</h3>
+        <form class="row" action="/">
+            <div class="col mx-2 input-group has-clear">
+                <input class="form-control" type="text" name="employer" placeholder="Employer" value="{{employer}}">
+                <button class="form-control-clear btn bg-transparent d-none" type="button">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="col mx-2 input-group has-clear">
+                <input class="form-control" type="text" name="title" placeholder="Job Title" value="{{title}}">
+                <button class="form-control-clear btn bg-transparent d-none" type="button">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <div class="col mx-2 input-group has-clear">
+                <input class="form-control" type="text" name="city" placeholder="City" value="{{city}}">
+                <button class="form-control-clear btn bg-transparent d-none" type="button">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <select class="col mx-2 form-control" name="state">
+                <option {{'selected' if not state}} value="">Any State</option>
+                {% for abv, name in states.items() %}
+                <option value="{{ abv }}" {{'selected' if abv == state }}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <select class="col mx-2 form-control" name="year">
+                <option {{'selected' if not year}} value="">Any Year</option>
+                {% for i in range(2019, 2007, -1) %}
+                <option value="{{ i }}" {{'selected' if i == year | int }}>{{ i }}</option>
+                {% endfor %}
+            </select>
+            <input class="col mx-2 btn btn-primary" type="submit" value="Search">
+        </form>
+    </div>
+    <div class="row overflow-auto">
+        <div class="col-lg-10 mx-auto">
+            <table class="table" data-toggle="table" data-pagination="true" data-sortable="true" data-url="/data"
+                data-side-pagination="server">
+                <thead>
+                    <tr>
+                        <th scope="col" data-sortable="true" data-field="EMPLOYER_NAME" data-formatter="linkFormatter">
+                            Employer</th>
+                        <th scope="col" data-sortable="true" data-field="JOB_TITLE" data-formatter="linkFormatter">Job
+                            Title</th>
+                        <th scope="col" data-sortable="true" data-field="PREVAILING_WAGE_1"
+                            data-formatter="salaryFormatter">
+                            Salary</th>
+                        <th scope="col" data-sortable="true" data-field="FULL_TIME_POSITION">Full Time?</th>
+                        <th scope="col" data-sortable="true" data-field="EMPLOYER_CITY">City</th>
+                        <th scope="col" data-sortable="true" data-field="EMPLOYER_STATE">State</th>
+                        <th scope="col" data-sortable="true" data-field="PERIOD_OF_EMPLOYMENT_START_DATE"
+                            data-sorter="dateSorter">Start Date
+                        </th>
+                        <th scope="col" data-sortable="true" data-field="CASE_STATUS">Case Status</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock%}
