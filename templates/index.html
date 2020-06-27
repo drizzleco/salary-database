@@ -15,33 +15,35 @@
         <h3>Search:</h3>
         <form class="row" action="/">
             <div class="col mx-2 input-group has-clear">
-                <input class="form-control" type="text" name="employer" placeholder="Employer" value="{{employer}}">
+                <input class="form-control" type="text" name="employer" placeholder="Employer"
+                    value="{{form_values['employer']}}">
                 <button class="form-control-clear btn bg-transparent d-none" type="button">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             <div class="col mx-2 input-group has-clear">
-                <input class="form-control" type="text" name="title" placeholder="Job Title" value="{{title}}">
+                <input class="form-control" type="text" name="title" placeholder="Job Title"
+                    value="{{form_values['title']}}">
                 <button class="form-control-clear btn bg-transparent d-none" type="button">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             <div class="col mx-2 input-group has-clear">
-                <input class="form-control" type="text" name="city" placeholder="City" value="{{city}}">
+                <input class="form-control" type="text" name="city" placeholder="City" value="{{form_values['city']}}">
                 <button class="form-control-clear btn bg-transparent d-none" type="button">
                     <i class="fa fa-times"></i>
                 </button>
             </div>
             <select class="col mx-2 form-control" name="state">
-                <option {{'selected' if not state}} value="">Any State</option>
+                <option {{'selected' if not form_values['state']}} value="">Any State</option>
                 {% for abv, name in states.items() %}
-                <option value="{{ abv }}" {{'selected' if abv == state }}>{{ name }}</option>
+                <option value="{{ abv }}" {{'selected' if abv == form_values['state'] }}>{{ name }}</option>
                 {% endfor %}
             </select>
             <select class="col mx-2 form-control" name="year">
-                <option {{'selected' if not year}} value="">Any Year</option>
+                <option {{'selected' if not form_values['year']}} value="">Any Year</option>
                 {% for i in range(2019, 2007, -1) %}
-                <option value="{{ i }}" {{'selected' if i == year | int }}>{{ i }}</option>
+                <option value="{{ i }}" {{'selected' if i == form_values['year'] | int }}>{{ i }}</option>
                 {% endfor %}
             </select>
             <input class="col mx-2 btn btn-primary" type="submit" value="Search">
@@ -73,7 +75,5 @@
         </div>
     </div>
 </section>
-
-
 
 {% endblock%}
