@@ -27,10 +27,6 @@ db.init_app(app)
 
 @app.route("/employer/", methods=['GET'])
 def employer():
-    try:      
-         conn = db.session.connection()
-    except sqlite3.Error:
-         return jsonify({"message": "Unable to connect to the database."}), 400
 
     field = request.args.get("field", None)
     value = request.args.get("value", None)
@@ -40,7 +36,8 @@ def employer():
     if not value:
         return jsonify({"message": "Value is required."}), 400
 
-    data = db.engine.execute("SELECT * FROM salary WHERE EMPLOYER_NAME = 'AARP'")
+    data = db.engine.execute("""SELECT * FROM salary WHERE EMPLOYER_NAME = '%s'
+        """ % value)
     final_result = [dict(i) for i in data]
     return jsonify({"results": final_result}), 400
     db.session.commit()
