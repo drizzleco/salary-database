@@ -16,8 +16,8 @@ cleaned_sheet = cleaned_sheet[cleaned_sheet['FULL_TIME_POSITION'] == 'Y']
 import sqlite3
 import os
 # Make the file if it doesn't exist.
-#if not os.path.exists('../data/salary.sqlite'):
-    #os.mknod('../data/salary.sqlite')
+if not os.path.exists('../data/salary.sqlite'):
+    os.mknod('../data/salary.sqlite')
 conn = sqlite3.connect('../data/salary.sqlite')
 cleaned_sheet.to_sql(name='salary', if_exists='replace', con=conn, index=False)
 

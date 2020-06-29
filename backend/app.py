@@ -11,26 +11,26 @@ from flask_jwt_extended import (
     jwt_required,
 )
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 
 from script import cleaned_sheet
 
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///salary.sqlite"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../data/salary.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 db.app = app
 db.init_app(app)
-    
 
 @app.route("/employer/", methods=['GET'])
 def employer():
     try:      
-        conn = sqlite3.connect('../data/salary.sqlite')
+         conn = db.session.connection()
     except sqlite3.Error:
-        return jsonify({"message": "Unable to connect to the database."}), 400
+         return jsonify({"message": "Unable to connect to the database."}), 400
 
     field = request.args.get("field", None)
     value = request.args.get("value", None)
@@ -40,9 +40,9 @@ def employer():
     if not value:
         return jsonify({"message": "Value is required."}), 400
 
-    data = pd.read_sql("SELECT * FROM salary WHERE EMPLOYER_NAME = 'AARP'", conn)
-    results = data.values.tolist()
-    return jsonify({"results": results}), 400
+    data = db.engine.execute("SELECT * FROM salary WHERE EMPLOYER_NAME = 'AARP'")
+    final_result = [dict(i) for i in data]
+    return jsonify({"results": final_result}), 400
     db.session.commit()
     return jsonify(message="success"), 200
     
