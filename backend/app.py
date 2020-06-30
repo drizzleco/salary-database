@@ -25,7 +25,7 @@ jwt = JWTManager(app)
 db.app = app
 db.init_app(app)
 
-@app.route("/employer/", methods=['GET'])
+@app.route("/data/", methods=['GET'])
 def employer():
 
     field = request.args.get("field", None).upper()
@@ -37,7 +37,7 @@ def employer():
         return jsonify({"message": "Value is required."}), 400
 
     data = db.engine.execute("""SELECT * FROM salary WHERE %s = '%s'
-        """ % (field, value))
+        """ % (field, value, ))
     
     final_result = [dict(i) for i in data]
     return jsonify({"results": final_result}), 400
