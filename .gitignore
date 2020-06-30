@@ -1,5 +1,16 @@
+.vscode/
+*.DS_Store
+
 # Ignore stuff from jupyter notebooks
 .ipynb_checkpoints/
 
 # Ignore the virtualenv
 .env/
+
+# ignore data
+
+*.sqlite1
+*.pyc
+*.sqlite
+*.csv
+*.xlsx

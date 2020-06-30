@@ -1,7 +1,0 @@
-*
-*.DS_Store
-*.sqlite1
-*.pyc
-*.sqlite
-*/
-!.gitignore
