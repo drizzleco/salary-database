@@ -32,6 +32,10 @@ function linkFormatter(value, row, index, field) {
         return "<a href=\"?employer=" + value + "\">" + value + "</a>"
     if (field === 'JOB_TITLE')
         return "<a href=\"?title=" + value + "\">" + value + "</a>"
+    if (field === 'EMPLOYER_CITY')
+        return "<a href=\"?city=" + value + "\">" + value + "</a>"
+    if (field === 'EMPLOYER_STATE')
+        return "<a href=\"?state=" + value + "\">" + value + "</a>"
 }
 
 var formatter = new Intl.NumberFormat('en-US', {

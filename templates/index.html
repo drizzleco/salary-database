@@ -51,8 +51,8 @@
     </div>
     <div class="row overflow-auto">
         <div class="col-lg-10 mx-auto">
-            <table class="table" data-toggle="table" data-pagination="true" data-sortable="true" data-url="/data"
-                data-side-pagination="server">
+            <table class="table" data-toggle="table" data-pagination="true" data-pagination-v-align="both"
+                data-sortable="true" data-url="/data" data-side-pagination="server">
                 <thead>
                     <tr>
                         <th scope="col" data-sortable="true" data-field="EMPLOYER_NAME" data-formatter="linkFormatter">
@@ -63,8 +63,10 @@
                             data-formatter="salaryFormatter">
                             Salary</th>
                         <th scope="col" data-sortable="true" data-field="FULL_TIME_POSITION">Full Time?</th>
-                        <th scope="col" data-sortable="true" data-field="EMPLOYER_CITY">City</th>
-                        <th scope="col" data-sortable="true" data-field="EMPLOYER_STATE">State</th>
+                        <th scope="col" data-sortable="true" data-field="EMPLOYER_CITY" data-formatter="linkFormatter">
+                            City</th>
+                        <th scope="col" data-sortable="true" data-field="EMPLOYER_STATE" data-formatter="linkFormatter">
+                            State</th>
                         <th scope="col" data-sortable="true" data-field="PERIOD_OF_EMPLOYMENT_START_DATE"
                             data-sorter="dateSorter">Start Date
                         </th>
