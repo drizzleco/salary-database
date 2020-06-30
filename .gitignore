@@ -1,6 +1,6 @@
 .vscode/
 *.DS_Store
-
+secrets.py
 # Ignore stuff from jupyter notebooks
 .ipynb_checkpoints/
 
