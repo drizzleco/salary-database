@@ -1,4 +1,4 @@
-import csv, sqlite3, urllib
+import csv, sqlite3
 import pandas as pd
 import jwt as jwt_decode
 from flask import Flask, jsonify, request
@@ -12,7 +12,6 @@ from flask_jwt_extended import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
-from urllib.parse import unquote
 
 from script import cleaned_sheet
 
@@ -36,7 +35,7 @@ def employer():
         return jsonify({"message": "Field is required."}), 400
     if not value:
         return jsonify({"message": "Value is required."}), 400
-        
+
     data = db.engine.execute("""SELECT * FROM salary WHERE %s = '%s'
         """ % (field, value))
     
