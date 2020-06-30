@@ -10,19 +10,18 @@ from flask_jwt_extended import (
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from helpers import salary_keys, states
-from secrets import SECRET_KEY
+import random
 
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../data/salary.sqlite"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/salary.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = SECRET_KEY
+app.secret_key = ''.join([chr(random.randint(65,92)) for _ in range(50)])
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 db.app = app
 db.init_app(app)
-
 
 class Salary(db.Model):
     CASE_NUMBER = db.Column(db.Text, primary_key=True)
