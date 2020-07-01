@@ -69,7 +69,7 @@ def employer():
     )
 
     final_result = [dict(i) for i in data]
-    return jsonify({"results": final_result}), 400
+    return jsonify({"results": final_result}), 200
     db.session.commit()
     return jsonify(message="success"), 200
 
@@ -109,4 +109,3 @@ def api():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
