@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request, render_template, session
+from flask_graphql import GraphQLView
+from schema import schema
 from flask_cors import CORS
 from flask_jwt_extended import (
     JWTManager,
@@ -7,10 +9,10 @@ from flask_jwt_extended import (
     get_raw_jwt,
     jwt_required,
 )
-from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
 from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
 from flask_restful import Api, Resource
+from models import db, Salary
 from helpers import salary_keys, states
 from secrets import SECRET_KEY
 
@@ -20,7 +22,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../data/salary.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = SECRET_KEY
 
-db = SQLAlchemy(app)
 jwt = JWTManager(app)
 db.app = app
 db.init_app(app)
@@ -29,17 +30,12 @@ api = Api(app)
 
 @swag_from('spect_dict.txt', validation=True)
 
-class Salary(db.Model):
-    CASE_NUMBER = db.Column(db.Text, primary_key=True)
-    CASE_STATUS = db.Column(db.Text)
-    VISA_CLASS = db.Column(db.Text)
-    JOB_TITLE = db.Column(db.Text)
-    FULL_TIME_POSITION = db.Column(db.Text)
-    EMPLOYMENT_START_DATE = db.Column(db.Text)
-    EMPLOYER_NAME = db.Column(db.Text)
-    PREVAILING_WAGE = db.Column(db.Integer)
-    EMPLOYER_CITY = db.Column(db.Text)
-    EMPLOYER_STATE = db.Column(db.Text)
+app.add_url_rule(
+    "/graphql",
+    view_func=GraphQLView.as_view(
+        "graphql", schema=schema, graphiql=True  # for having the GraphiQL interface
+    ),
+)
 
 
 @app.route("/", methods=["GET"])
