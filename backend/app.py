@@ -53,25 +53,36 @@ def home():
 
 @app.route("/data/", methods=["GET"])
 def employer():
-
-    field = request.args.get("field", None).upper()
-    value = request.args.get("value", None).upper()
-
-    if not field:
-        return jsonify({"message": "Field is required."}), 400
-    if not value:
-        return jsonify({"message": "Value is required."}), 400
+    field_check = 0
+    value_check = 0
+    fields= ["''"]*4
+    for d in range(0,4):
+        field = request.args.get("field" + str(d+1), None)
+        if field:
+            fields[d]=((field).upper())
+        else:
+            field_check+=1
+    if field_check == 4:
+        return jsonify({"message": "A field is required."}), 400
+ 
+    values = [""]*4
+    for a in range(0,4):
+        value = request.args.get("value" + str(a+1), None)
+        if value:
+            values[a] = ((value).upper())
+        else:
+            value_check+=1
+    if value_check != field_check:
+        return jsonify({"message": "A value is required."}), 400
 
     data = db.engine.execute(
-        """SELECT * FROM salary WHERE %s = '%s'
+        """SELECT * FROM salary WHERE (%s = '%s' AND %s = '%s' AND %s = '%s' AND %s = '%s')
         """
-        % (field, value,)
+        % (fields[0], values[0], fields[1], values[1], fields[2], values[2], fields[3], values[3])
     )
-
     final_result = [dict(i) for i in data]
-    return jsonify({"results": final_result}), 400
-    db.session.commit()
-    return jsonify(message="success"), 200
+    return jsonify({"results": final_result}), 200
+    
 
 
 @app.route("/table", methods=["GET"])
