@@ -8,16 +8,7 @@
 ## Setup
 
 1.  `make install`
-2.  `make collect_data` to populate salary db
-
-    To download data individually, run:
-
-    `python data/data_to_db.py [NAME OF FILE TO SAVE AS] [DOWNLOAD URL]`
-
-    EX, to just download 2019 disclosure data:
-
-    `python data/data_to_db.py disclosure_2019 https://www.foreignlaborcert.doleta.gov/pdf/PerformanceData/2019/H-1B_Disclosure_Data_FY2019.xlsx`
-
+2.  `make collect_2019_data` to populate salary db with just 2019 data
 3.  add a secrets file
 
     `backend/secrets.py`

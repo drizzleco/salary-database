@@ -3,7 +3,7 @@
 secrets.py
 # Ignore stuff from jupyter notebooks
 .ipynb_checkpoints/
-
+*.ipynb
 # Ignore the virtualenv
 .env/
 
