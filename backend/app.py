@@ -30,9 +30,9 @@ class Salary(db.Model):
     VISA_CLASS = db.Column(db.Text)
     JOB_TITLE = db.Column(db.Text)
     FULL_TIME_POSITION = db.Column(db.Text)
-    PERIOD_OF_EMPLOYMENT_START_DATE = db.Column(db.Text)
+    EMPLOYMENT_START_DATE = db.Column(db.Text)
     EMPLOYER_NAME = db.Column(db.Text)
-    PREVAILING_WAGE_1 = db.Column(db.Integer)
+    PREVAILING_WAGE = db.Column(db.Integer)
     EMPLOYER_CITY = db.Column(db.Text)
     EMPLOYER_STATE = db.Column(db.Text)
 
