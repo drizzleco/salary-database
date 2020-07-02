@@ -86,6 +86,8 @@ def data():
     max_results = int(request.args.get("limit"))
     offset = int(request.args.get("offset"))
     page = offset // max_results
+    sort_by = request.args.get("sort", "PREVAILING_WAGE")
+    order = request.args.get("order", "asc")
     fuzzy_query = {}
     for query in ["employer", "title", "city", "state"]:
         fuzzy_query[query] = "%{}%".format(session[query])
@@ -101,7 +103,9 @@ def data():
 
     rows = [
         {key: salary.__dict__[key] for key in salary_keys}
-        for salary in matched.paginate(page + 1, max_results, False).items
+        for salary in matched.order_by(getattr(getattr(Salary, sort_by), order)())
+        .paginate(page + 1, max_results, False)
+        .items
     ]
     return jsonify({"total": matched.count(), "rows": rows})
 
