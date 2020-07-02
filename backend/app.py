@@ -13,7 +13,7 @@ from sqlalchemy import text
 from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
 from flask_restful import Api, Resource
 from models import db, Salary
-from helpers import salary_keys, states
+from helpers import SALARY_KEYS, STATES
 from secrets import SECRET_KEY
 
 app = Flask(__name__)
@@ -28,41 +28,36 @@ db.init_app(app)
 swagger = Swagger(app)
 api = Api(app)
 
-@swag_from('spect_dict.txt', validation=True)
 
-app.add_url_rule(
-    "/graphql",
-    view_func=GraphQLView.as_view(
-        "graphql", schema=schema, graphiql=True  # for having the GraphiQL interface
-    ),
-)
-
-
+@swag_from("spect_dict.txt", validation=True)
 @app.route("/", methods=["GET"])
 def home():
+    """
+    Home page route
+    """
     form_values = {}
     for query in ["employer", "title", "city", "state", "year"]:
         value = request.args.get(query, session.get(query, "")).strip()
         form_values[query] = value
         session[query] = value
     ppl = [
-        {key: salary.__dict__[key] for key in salary_keys}
+        {key: salary.__dict__[key] for key in SALARY_KEYS}
         for salary in Salary.query.limit(10).all()
     ]
-    return render_template("index.html", states=states, form_values=form_values)
+    return render_template("index.html", states=STATES, form_values=form_values)
 
 
 @app.route("/data/", methods=["GET"])
 def employer():
     params = []
-    for d in range(0,4):
-        index = str(d+1)
-        field = request.args.get("field"+index, None)
-        value = request.args.get("value"+index, None)
+    for d in range(0, 4):
+        index = str(d + 1)
+        field = request.args.get("field" + index, None)
+        value = request.args.get("value" + index, None)
         if field and value:
             params.append(field.upper())
             params.append(value.upper())
-        elif not(field or value):
+        elif not (field or value):
             params.append("''")
             params.append("")
         else:
@@ -71,7 +66,16 @@ def employer():
     data = db.engine.execute(
         """SELECT * FROM salary WHERE (%s = '%s' AND %s = '%s' AND %s = '%s' AND %s = '%s')
         """
-        % (params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7])
+        % (
+            params[0],
+            params[1],
+            params[2],
+            params[3],
+            params[4],
+            params[5],
+            params[6],
+            params[7],
+        )
     )
     final_result = [dict(i) for i in data]
     return jsonify({"results": final_result}), 200
@@ -80,9 +84,31 @@ def employer():
     return jsonify(message="success"), 200
 
 
+# GraphQL page route
+app.add_url_rule(
+    "/graphql", view_func=GraphQLView.as_view("graphql", schema=schema, graphiql=True),
+)
+
 
 @app.route("/table", methods=["GET"])
-def data():
+def table():
+    """
+    Endpoint used by table in frontend to fetch salary data 
+
+    Retrieves filter queries from Session and returns sorted and 
+    paginated data according to the limit, offset, sort, and order
+    query params
+
+    Query string:
+        - limit(str) - max number of results to return
+        - offset(str) - starting point of data
+        - sort(str) - column to sort data by. default: prevailing_wage
+        - order(str) - how to order column being sorted(asc or desc). default: asc
+    returns:
+        matched salary data in form of dict with keys:
+            - total - total number of matched results. not the same as limit
+            - rows - matched salary data in current page as a list
+    """
     max_results = int(request.args.get("limit"))
     offset = int(request.args.get("offset"))
     page = offset // max_results
@@ -102,7 +128,7 @@ def data():
     )
 
     rows = [
-        {key: salary.__dict__[key] for key in salary_keys}
+        {key: salary.__dict__[key] for key in SALARY_KEYS}
         for salary in matched.order_by(getattr(getattr(Salary, sort_by), order)())
         .paginate(page + 1, max_results, False)
         .items
@@ -112,11 +138,17 @@ def data():
 
 @app.route("/about", methods=["GET"])
 def about():
+    """
+    About page route
+    """
     return render_template("about.html")
 
 
 @app.route("/api", methods=["GET"])
 def api():
+    """
+    API Reference page route
+    """
     return render_template("api.html")
 
 

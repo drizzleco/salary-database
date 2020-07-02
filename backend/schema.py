@@ -30,6 +30,9 @@ class Query(graphene.ObjectType):
     )
 
     def resolve_salaries(self, info, **args):
+        """
+        Parse GraphQL query and return corresponding data
+        """
         page_size = args.get("limit", 10)
         offset = args.get("page", 0) * page_size
         fuzzy_query = {}

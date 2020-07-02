@@ -1,4 +1,4 @@
-salary_keys = [
+SALARY_KEYS = [
     "case_number",
     "case_status",
     "visa_class",
@@ -11,7 +11,7 @@ salary_keys = [
     "employer_state",
 ]
 
-states = {
+STATES = {
     "AL": "Alabama",
     "AK": "Alaska",
     "AZ": "Arizona",
