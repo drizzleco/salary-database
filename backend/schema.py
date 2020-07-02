@@ -5,11 +5,19 @@ from models import db, Salary as SalaryModel
 
 
 class Salary(SQLAlchemyObjectType):
+    """
+    Salary Model
+    """
+
     class Meta:
         model = SalaryModel
 
 
 class Query(graphene.ObjectType):
+    """
+    Base Query
+    """
+
     salaries = graphene.List(
         Salary,
         employer=graphene.String(),
@@ -32,12 +40,12 @@ class Query(graphene.ObjectType):
         return (
             Salary.get_query(info)
             .filter(
-                db.or_(SalaryModel.EMPLOYER_NAME.like(fuzzy_query["employer"])),
-                db.or_(SalaryModel.JOB_TITLE.like(fuzzy_query["title"])),
-                db.or_(SalaryModel.EMPLOYER_CITY.like(fuzzy_query["city"])),
-                db.or_(SalaryModel.EMPLOYER_STATE.like(fuzzy_query["state"])),
+                db.or_(SalaryModel.employer_name.like(fuzzy_query["employer"])),
+                db.or_(SalaryModel.job_title.like(fuzzy_query["title"])),
+                db.or_(SalaryModel.employer_city.like(fuzzy_query["city"])),
+                db.or_(SalaryModel.employer_state.like(fuzzy_query["state"])),
                 db.or_(
-                    db.func.substr(SalaryModel.EMPLOYMENT_START_DATE, -2).like(year)
+                    db.func.substr(SalaryModel.employment_start_date, -2).like(year)
                 ),
             )
             .offset(offset)

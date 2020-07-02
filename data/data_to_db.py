@@ -25,34 +25,34 @@ sheet = pd.read_csv(csv_path)
 print("Renaming columns...")
 sheet.rename(
     columns={
-        "PERIOD_OF_EMPLOYMENT_START_DATE": "EMPLOYMENT_START_DATE",
-        "PREVAILING_WAGE_1": "PREVAILING_WAGE",
+        "PERIOD_OF_EMPLOYMENT_START_DATE": "employment_start_date",
+        "PREVAILING_WAGE_1": "prevailing_wage",
     },
     inplace=True,
 )
 
 PERSON_FIELDS = [
-    "CASE_NUMBER",
-    "CASE_STATUS",
-    "VISA_CLASS",
-    "JOB_TITLE",
-    "FULL_TIME_POSITION",
-    "EMPLOYMENT_START_DATE",
+    "case_number",
+    "case_status",
+    "visa_class",
+    "job_title",
+    "full_time_position",
+    "employment_start_date",
 ]
 EMPLOYER_FIELDS = [
-    "EMPLOYER_NAME",
-    "PREVAILING_WAGE",
-    "EMPLOYER_CITY",
-    "EMPLOYER_STATE",
+    "employer_name",
+    "prevailing_wage",
+    "employer_city",
+    "employer_state",
 ]
 
 # SELECT some important fields
 print("Cleaning sheet")
 cleaned_sheet = sheet[PERSON_FIELDS + EMPLOYER_FIELDS]
-cleaned_sheet = cleaned_sheet[cleaned_sheet["VISA_CLASS"] == "H-1B"]
-cleaned_sheet = cleaned_sheet[cleaned_sheet["PREVAILING_WAGE"].notnull()]
-cleaned_sheet = cleaned_sheet[cleaned_sheet["CASE_STATUS"] == "CERTIFIED"]
-cleaned_sheet = cleaned_sheet[cleaned_sheet["FULL_TIME_POSITION"] == "Y"]
+cleaned_sheet = cleaned_sheet[cleaned_sheet["visa_class"] == "H-1B"]
+cleaned_sheet = cleaned_sheet[cleaned_sheet["prevailing_wage"].notnull()]
+cleaned_sheet = cleaned_sheet[cleaned_sheet["case_status"] == "CERTIFIED"]
+cleaned_sheet = cleaned_sheet[cleaned_sheet["full_time_position"] == "Y"]
 
 
 # Make the file if it doesn't exist.

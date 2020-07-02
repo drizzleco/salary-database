@@ -86,7 +86,7 @@ def data():
     max_results = int(request.args.get("limit"))
     offset = int(request.args.get("offset"))
     page = offset // max_results
-    sort_by = request.args.get("sort", "PREVAILING_WAGE")
+    sort_by = request.args.get("sort", "prevailing_wage")
     order = request.args.get("order", "asc")
     fuzzy_query = {}
     for query in ["employer", "title", "city", "state"]:
@@ -94,11 +94,11 @@ def data():
     year = session.get("year")
     year = year[-2:] if year else "%%"  # get year without century
     matched = Salary.query.filter(
-        db.or_(Salary.EMPLOYER_NAME.like(fuzzy_query["employer"])),
-        db.or_(Salary.JOB_TITLE.like(fuzzy_query["title"])),
-        db.or_(Salary.EMPLOYER_CITY.like(fuzzy_query["city"])),
-        db.or_(Salary.EMPLOYER_STATE.like(fuzzy_query["state"])),
-        db.or_(db.func.substr(Salary.EMPLOYMENT_START_DATE, -2).like(year)),
+        db.or_(Salary.employer_name.like(fuzzy_query["employer"])),
+        db.or_(Salary.job_title.like(fuzzy_query["title"])),
+        db.or_(Salary.employer_city.like(fuzzy_query["city"])),
+        db.or_(Salary.employer_state.like(fuzzy_query["state"])),
+        db.or_(db.func.substr(Salary.employment_start_date, -2).like(year)),
     )
 
     rows = [
