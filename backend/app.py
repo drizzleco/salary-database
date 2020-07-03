@@ -9,6 +9,8 @@ from flask_jwt_extended import (
 )
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
+from flask_restful import Api, Resource
 from helpers import salary_keys, states
 from secrets import SECRET_KEY
 
@@ -22,7 +24,10 @@ db = SQLAlchemy(app)
 jwt = JWTManager(app)
 db.app = app
 db.init_app(app)
+swagger = Swagger(app)
+api = Api(app)
 
+@swag_from('spect_dict.txt', validation=True)
 
 class Salary(db.Model):
     CASE_NUMBER = db.Column(db.Text, primary_key=True)
@@ -53,24 +58,24 @@ def home():
 
 @app.route("/data/", methods=["GET"])
 def employer():
-    values = [""]*4
-    fields= ["''"]*4
+    params = []
     for d in range(0,4):
         index = str(d+1)
         field = request.args.get("field"+index, None)
         value = request.args.get("value"+index, None)
         if field and value:
-            fields[d]=((field).upper())
-            values[d]=((value).upper())
+            params.append(field.upper())
+            params.append(value.upper())
         elif not(field or value):
-            break
+            params.append("''")
+            params.append("")
         else:
             return jsonify({"message": "A parameter is missing."}), 400
 
     data = db.engine.execute(
         """SELECT * FROM salary WHERE (%s = '%s' AND %s = '%s' AND %s = '%s' AND %s = '%s')
         """
-        % (fields[0], values[0], fields[1], values[1], fields[2], values[2], fields[3], values[3])
+        % (params[0], params[1], params[2], params[3], params[4], params[5], params[6], params[7])
     )
     final_result = [dict(i) for i in data]
     return jsonify({"results": final_result}), 200
