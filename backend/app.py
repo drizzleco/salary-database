@@ -53,27 +53,19 @@ def home():
 
 @app.route("/data/", methods=["GET"])
 def employer():
-    field_check = 0
-    value_check = 0
+    values = [""]*4
     fields= ["''"]*4
     for d in range(0,4):
-        field = request.args.get("field" + str(d+1), None)
-        if field:
+        index = str(d+1)
+        field = request.args.get("field"+index, None)
+        value = request.args.get("value"+index, None)
+        if field and value:
             fields[d]=((field).upper())
+            values[d]=((value).upper())
+        elif not(field or value):
+            break
         else:
-            field_check+=1
-    if field_check == 4:
-        return jsonify({"message": "A field is required."}), 400
- 
-    values = [""]*4
-    for a in range(0,4):
-        value = request.args.get("value" + str(a+1), None)
-        if value:
-            values[a] = ((value).upper())
-        else:
-            value_check+=1
-    if value_check != field_check:
-        return jsonify({"message": "A value is required."}), 400
+            return jsonify({"message": "A parameter is missing."}), 400
 
     data = db.engine.execute(
         """SELECT * FROM salary WHERE (%s = '%s' AND %s = '%s' AND %s = '%s' AND %s = '%s')
@@ -82,12 +74,10 @@ def employer():
     )
     final_result = [dict(i) for i in data]
     return jsonify({"results": final_result}), 200
-<<<<<<< HEAD
-    
-=======
+
     db.session.commit()
     return jsonify(message="success"), 200
->>>>>>> 45cc900c90cded5261bb58c3898953046f689e7b
+
 
 
 @app.route("/table", methods=["GET"])
