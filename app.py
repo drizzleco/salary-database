@@ -14,14 +14,17 @@ import random
 
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///data/salary.sqlite"
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "postgres://mtscouwjvpgsvj:d1df6ddc0071c78af5befa14e2fdf89b8faf6bfe58074d03c9345eed337b3cc9@ec2-52-202-66-191.compute-1.amazonaws.com:5432/d7fqshecacpm5u"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = ''.join([chr(random.randint(65,92)) for _ in range(50)])
+app.secret_key = "".join([chr(random.randint(65, 92)) for _ in range(50)])
 
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 db.app = app
 db.init_app(app)
+
 
 class Salary(db.Model):
     CASE_NUMBER = db.Column(db.Text, primary_key=True)
