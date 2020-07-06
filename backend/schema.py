@@ -51,6 +51,7 @@ class Query(graphene.ObjectType):
                     db.func.substr(SalaryModel.employment_start_date, -2).like(year)
                 ),
             )
+            .order_by(db.asc(SalaryModel.employer_name))
             .offset(offset)
             .limit(page_size)
         )
