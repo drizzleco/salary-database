@@ -9,7 +9,7 @@ name = sys.argv[1]
 url = sys.argv[2]
 
 # download data
-print("Downloading data for" + name)
+print("Downloading data for " + name)
 xlsx_path = wget.download(url, out="data/{}.xlsx".format(name))
 
 # convert to csv
@@ -22,6 +22,14 @@ Xlsx2csv(xlsx_path, outputencoding="utf-8").convert(csv_path)
 print("Saving {} to database".format(name))
 print("Reading file: " + csv_path)
 sheet = pd.read_csv(csv_path)
+print("Renaming columns...")
+sheet.rename(
+    columns={
+        "PERIOD_OF_EMPLOYMENT_START_DATE": "EMPLOYMENT_START_DATE",
+        "PREVAILING_WAGE_1": "PREVAILING_WAGE",
+    },
+    inplace=True,
+)
 
 PERSON_FIELDS = [
     "CASE_NUMBER",
@@ -29,11 +37,11 @@ PERSON_FIELDS = [
     "VISA_CLASS",
     "JOB_TITLE",
     "FULL_TIME_POSITION",
-    "PERIOD_OF_EMPLOYMENT_START_DATE",
+    "EMPLOYMENT_START_DATE",
 ]
 EMPLOYER_FIELDS = [
     "EMPLOYER_NAME",
-    "PREVAILING_WAGE_1",
+    "PREVAILING_WAGE",
     "EMPLOYER_CITY",
     "EMPLOYER_STATE",
 ]
@@ -42,7 +50,7 @@ EMPLOYER_FIELDS = [
 print("Cleaning sheet")
 cleaned_sheet = sheet[PERSON_FIELDS + EMPLOYER_FIELDS]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["VISA_CLASS"] == "H-1B"]
-cleaned_sheet = cleaned_sheet[cleaned_sheet["PREVAILING_WAGE_1"].notnull()]
+cleaned_sheet = cleaned_sheet[cleaned_sheet["PREVAILING_WAGE"].notnull()]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["CASE_STATUS"] == "CERTIFIED"]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["FULL_TIME_POSITION"] == "Y"]
 
@@ -56,4 +64,3 @@ conn = sqlite3.connect("data/salary.sqlite")
 print("Saving data to db")
 cleaned_sheet.to_sql(name="salary", if_exists="replace", con=conn, index=False)
 print("Done!!")
-
