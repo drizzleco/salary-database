@@ -11,6 +11,8 @@ SALARY_KEYS = [
     "employer_state",
 ]
 
+QUERY_KEYS = ["employer", "title", "city", "state", "year"]
+
 STATES = {
     "AL": "Alabama",
     "AK": "Alaska",

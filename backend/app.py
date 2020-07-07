@@ -13,7 +13,7 @@ from sqlalchemy import text
 from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
 from flask_restful import Api, Resource
 from models import db, Salary
-from helpers import SALARY_KEYS, STATES
+from helpers import SALARY_KEYS, QUERY_KEYS, STATES
 from secrets import SECRET_KEY
 
 app = Flask(__name__)
@@ -36,7 +36,7 @@ def home():
     Home page route
     """
     form_values = {}
-    for query in ["employer", "title", "city", "state", "year"]:
+    for query in QUERY_KEYS:
         value = request.args.get(query, session.get(query, "")).strip()
         form_values[query] = value
         session[query] = value
@@ -115,16 +115,16 @@ def table():
     sort_by = request.args.get("sort", "prevailing_wage")
     order = request.args.get("order", "asc")
     fuzzy_query = {}
-    for query in ["employer", "title", "city", "state"]:
+    for query in QUERY_KEYS:
         fuzzy_query[query] = "%{}%".format(session[query])
-    year = session.get("year")
-    year = year[-2:] if year else "%%"  # get year without century
     matched = Salary.query.filter(
         db.or_(Salary.employer_name.like(fuzzy_query["employer"])),
         db.or_(Salary.job_title.like(fuzzy_query["title"])),
         db.or_(Salary.employer_city.like(fuzzy_query["city"])),
         db.or_(Salary.employer_state.like(fuzzy_query["state"])),
-        db.or_(db.func.substr(Salary.employment_start_date, -2).like(year)),
+        db.or_(
+            db.extract("year", Salary.employment_start_date).like(fuzzy_query["year"])
+        ),
     )
 
     rows = [
@@ -145,7 +145,7 @@ def about():
 
 
 @app.route("/api", methods=["GET"])
-def api():
+def api_ref():
     """
     API Reference page route
     """

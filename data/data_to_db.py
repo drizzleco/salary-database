@@ -53,6 +53,9 @@ cleaned_sheet = cleaned_sheet[cleaned_sheet["VISA_CLASS"] == "H-1B"]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["PREVAILING_WAGE"].notnull()]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["CASE_STATUS"] == "CERTIFIED"]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["FULL_TIME_POSITION"] == "Y"]
+cleaned_sheet["EMPLOYMENT_START_DATE"] = pd.to_datetime(
+    cleaned_sheet["EMPLOYMENT_START_DATE"]
+).dt.date
 
 
 # Make the file if it doesn't exist.

@@ -2,6 +2,7 @@ import graphene
 from graphene import relay
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
 from models import db, Salary as SalaryModel
+from helpers import QUERY_KEYS
 
 
 class Salary(SQLAlchemyObjectType):
@@ -36,10 +37,8 @@ class Query(graphene.ObjectType):
         page_size = args.get("limit", 10)
         offset = args.get("page", 0) * page_size
         fuzzy_query = {}
-        for query in ["employer", "title", "city", "state"]:
+        for query in QUERY_KEYS:
             fuzzy_query[query] = "%{}%".format(args.get(query, ""))
-        year = args.get("year")
-        year = year[-2:] if year else "%%"  # get year without century
         return (
             Salary.get_query(info)
             .filter(
@@ -48,7 +47,9 @@ class Query(graphene.ObjectType):
                 db.or_(SalaryModel.employer_city.like(fuzzy_query["city"])),
                 db.or_(SalaryModel.employer_state.like(fuzzy_query["state"])),
                 db.or_(
-                    db.func.substr(SalaryModel.employment_start_date, -2).like(year)
+                    db.extract("year", SalaryModel.employment_start_date).like(
+                        fuzzy_query["year"]
+                    )
                 ),
             )
             .order_by(db.asc(SalaryModel.employer_name))
