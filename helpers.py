@@ -1,14 +1,14 @@
 salary_keys = [
-    "CASE_NUMBER",
-    "CASE_STATUS",
-    "VISA_CLASS",
-    "JOB_TITLE",
-    "FULL_TIME_POSITION",
-    "PERIOD_OF_EMPLOYMENT_START_DATE",
-    "EMPLOYER_NAME",
-    "PREVAILING_WAGE_1",
-    "EMPLOYER_CITY",
-    "EMPLOYER_STATE",
+    "case_number",
+    "case_status",
+    "visa_class",
+    "job_title",
+    "full_time_position",
+    "employment_start_date",
+    "employer_name",
+    "prevailing_wage",
+    "employer_city",
+    "employer_state",
 ]
 
 states = {

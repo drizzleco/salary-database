@@ -27,16 +27,16 @@ db.init_app(app)
 
 
 class Salary(db.Model):
-    CASE_NUMBER = db.Column(db.Text, primary_key=True)
-    CASE_STATUS = db.Column(db.Text)
-    VISA_CLASS = db.Column(db.Text)
-    JOB_TITLE = db.Column(db.Text)
-    FULL_TIME_POSITION = db.Column(db.Text)
-    PERIOD_OF_EMPLOYMENT_START_DATE = db.Column(db.Text)
-    EMPLOYER_NAME = db.Column(db.Text)
-    PREVAILING_WAGE_1 = db.Column(db.Integer)
-    EMPLOYER_CITY = db.Column(db.Text)
-    EMPLOYER_STATE = db.Column(db.Text)
+    case_number = db.Column(db.Text, primary_key=True)
+    case_status = db.Column(db.Text)
+    visa_class = db.Column(db.Text)
+    job_title = db.Column(db.Text)
+    full_time_position = db.Column(db.Text)
+    employment_start_date = db.Column(db.Text)
+    employer_name = db.Column(db.Text)
+    prevailing_wage = db.Column(db.Integer)
+    employer_city = db.Column(db.Text)
+    employer_state = db.Column(db.Text)
 
 
 @app.route("/", methods=["GET"])
@@ -85,10 +85,10 @@ def data():
     for query in ["employer", "title", "city", "state"]:
         fuzzy_query[query] = "%{}%".format(session[query])
     matched = Salary.query.filter(
-        db.or_(Salary.EMPLOYER_NAME.like(fuzzy_query["employer"])),
-        db.or_(Salary.JOB_TITLE.like(fuzzy_query["title"])),
-        db.or_(Salary.EMPLOYER_CITY.like(fuzzy_query["city"])),
-        db.or_(Salary.EMPLOYER_STATE.like(fuzzy_query["state"])),
+        db.or_(Salary.employer_name.like(fuzzy_query["employer"])),
+        db.or_(Salary.job_title.like(fuzzy_query["title"])),
+        db.or_(Salary.employer_city.like(fuzzy_query["city"])),
+        db.or_(Salary.employer_state.like(fuzzy_query["state"])),
         # db.or_(Salary.year == int(session.get("year"))),  # this doesn't work
     )
 
