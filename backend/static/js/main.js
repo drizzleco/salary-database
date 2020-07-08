@@ -28,13 +28,13 @@ function dateSorter(a, b) {
  * Format employer and job title column with value as a link
  */
 function linkFormatter(value, row, index, field) {
-    if (field === 'EMPLOYER_NAME')
+    if (field === 'employer_name')
         return "<a href=\"?employer=" + value + "\">" + value + "</a>"
-    if (field === 'JOB_TITLE')
+    if (field === 'job_title')
         return "<a href=\"?title=" + value + "\">" + value + "</a>"
-    if (field === 'EMPLOYER_CITY')
+    if (field === 'employer_city')
         return "<a href=\"?city=" + value + "\">" + value + "</a>"
-    if (field === 'EMPLOYER_STATE')
+    if (field === 'employer_state')
         return "<a href=\"?state=" + value + "\">" + value + "</a>"
 }
 

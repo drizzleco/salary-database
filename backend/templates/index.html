@@ -52,21 +52,22 @@
     <div class="row overflow-auto">
         <div class="col-lg-10 mx-auto">
             <table class="table" data-toggle="table" data-pagination="true" data-pagination-v-align="both"
-                data-sortable="true" data-url="/table" data-side-pagination="server">
+                data-sortable="true" data-sort-order="desc" data-silent-sort="false" data-url="/table"
+                data-side-pagination="server">
                 <thead>
                     <tr>
-                        <th scope="col" data-sortable="true" data-field="EMPLOYER_NAME" data-formatter="linkFormatter">
+                        <th scope="col" data-sortable="true" data-field="employer_name" data-formatter="linkFormatter">
                             Employer</th>
-                        <th scope="col" data-sortable="true" data-field="JOB_TITLE" data-formatter="linkFormatter">Job
+                        <th scope="col" data-sortable="true" data-field="job_title" data-formatter="linkFormatter">Job
                             Title</th>
-                        <th scope="col" data-sortable="true" data-field="PREVAILING_WAGE"
+                        <th scope="col" data-sortable="true" data-field="prevailing_wage"
                             data-formatter="salaryFormatter">
                             Salary</th>
-                        <th scope="col" data-sortable="true" data-field="EMPLOYER_CITY" data-formatter="linkFormatter">
+                        <th scope="col" data-sortable="true" data-field="employer_city" data-formatter="linkFormatter">
                             City</th>
-                        <th scope="col" data-sortable="true" data-field="EMPLOYER_STATE" data-formatter="linkFormatter">
+                        <th scope="col" data-sortable="true" data-field="employer_state" data-formatter="linkFormatter">
                             State</th>
-                        <th scope="col" data-sortable="true" data-field="EMPLOYMENT_START_DATE"
+                        <th scope="col" data-sortable="true" data-field="employment_start_date"
                             data-sorter="dateSorter">Start Date
                         </th>
                     </tr>

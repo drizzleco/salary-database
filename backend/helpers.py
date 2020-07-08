@@ -1,17 +1,19 @@
-salary_keys = [
-    "CASE_NUMBER",
-    "CASE_STATUS",
-    "VISA_CLASS",
-    "JOB_TITLE",
-    "FULL_TIME_POSITION",
-    "EMPLOYMENT_START_DATE",
-    "EMPLOYER_NAME",
-    "PREVAILING_WAGE",
-    "EMPLOYER_CITY",
-    "EMPLOYER_STATE",
+SALARY_KEYS = [
+    "case_number",
+    "case_status",
+    "visa_class",
+    "job_title",
+    "full_time_position",
+    "employment_start_date",
+    "employer_name",
+    "prevailing_wage",
+    "employer_city",
+    "employer_state",
 ]
 
-states = {
+QUERY_KEYS = ["employer", "title", "city", "state", "year"]
+
+STATES = {
     "AL": "Alabama",
     "AK": "Alaska",
     "AZ": "Arizona",
