@@ -138,7 +138,9 @@ def table():
         db.or_(Salary.employer_city.like(fuzzy_query["city"])),
         db.or_(Salary.employer_state.like(fuzzy_query["state"])),
         db.or_(
-            db.extract("year", Salary.employment_start_date).like(fuzzy_query["year"])
+            db.cast(db.extract("year", Salary.employment_start_date), db.String).like(
+                fuzzy_query["year"]
+            )
         ),
     )
 

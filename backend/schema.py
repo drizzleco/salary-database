@@ -47,9 +47,9 @@ class Query(graphene.ObjectType):
                 db.or_(SalaryModel.employer_city.like(fuzzy_query["city"])),
                 db.or_(SalaryModel.employer_state.like(fuzzy_query["state"])),
                 db.or_(
-                    db.extract("year", SalaryModel.employment_start_date).like(
-                        fuzzy_query["year"]
-                    )
+                    db.cast(
+                        db.extract("year", SalaryModel.employment_start_date), db.String
+                    ).like(fuzzy_query["year"])
                 ),
             )
             .order_by(db.asc(SalaryModel.employer_name))
