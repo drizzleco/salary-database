@@ -1,8 +1,8 @@
 import graphene
 from graphene import relay
 from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
-from models import db, Salary as SalaryModel
-from helpers import QUERY_KEYS
+from backend.models import db, Salary as SalaryModel
+from backend.helpers import QUERY_KEYS
 
 
 class Salary(SQLAlchemyObjectType):

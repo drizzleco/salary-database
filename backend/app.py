@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request, render_template, session
 from flask_graphql import GraphQLView
-from schema import schema
+from backend.schema import schema
 from flask_cors import CORS
 from flask_jwt_extended import (
     JWTManager,
@@ -12,13 +12,15 @@ from flask_jwt_extended import (
 from sqlalchemy import text
 from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
 from flask_restful import Api, Resource
-from models import db, Salary
-from helpers import SALARY_KEYS, QUERY_KEYS, STATES
-from secrets import SECRET_KEY
+from backend.models import db, Salary
+from backend.helpers import SALARY_KEYS, QUERY_KEYS, STATES
+from backend.secrets import SECRET_KEY
 
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../data/salary.sqlite"
+app.config[
+    "SQLALCHEMY_DATABASE_URI"
+] = "postgres://mtscouwjvpgsvj:d1df6ddc0071c78af5befa14e2fdf89b8faf6bfe58074d03c9345eed337b3cc9@ec2-52-202-66-191.compute-1.amazonaws.com:5432/d7fqshecacpm5u"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = SECRET_KEY
 
