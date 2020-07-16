@@ -19,6 +19,7 @@ body {
   z-index: 100;
 }
 
+<<<<<<< HEAD
 .table-wrapper {
   padding-bottom: 150px;
 }
@@ -28,3 +29,11 @@ footer {
   bottom: 0;
   width: 100%;
 }
+=======
+footer {
+  position : absolute;
+  bottom : 0;
+  height : 40px;
+  margin-top : 40px;
+}
+>>>>>>> 364dd07... Added href to graphql page

@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  description: Salary Database
+  version: 1.0.0
+  title: Salary Database
+servers:
+  - url: /
+  - url: /data
+  - url: /table
+  - url: /about
+  - url: /api
+tags:
+  - name: Index
+    description: Home page
+  - name: Employee Data
+    description: Queries database for employers based on employer fields
+  - name: Table
+    description: Returns table of employees
+  - name: About
+    description: About Salary Database app
+  - name: API
+    description: API
+paths:
+  /:
+    get:
+      tags:
+        - Index
+      summary: Directs user to home page
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/components/schemas/final_result'
+  # /data:
+  #   get:
+  #     tags:
+  #       - Employee Data
+  #     summary: Returns all employees in a list
+  #     responses:
+  #       '200':
+  #         description: Success
+  #         schema:
+  #           $ref: '#/components/schemas/final_result'
+  #       '400':
+  #         description: Error
+  #         schema:
+  #           $ref: '#/components/schemas/final_result'
+  /table:
+    get:
+      tags:
+        - Table
+      summary: Returns table of employees
+      parameters:
+        - in: query
+          name: limit
+          type: string
+          required: true
+          description: >-
+            Employer fields and values.
+            Ex.{'field1':'employer_name','value1':'aarp'}
+          schema:
+            $ref: '#/components/schemas/params'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/components/schemas/final_result'
+  /about:
+    get:
+      tags:
+        - About
+      summary: About the Salary Database API
+      responses:
+        '200':
+          description: Success
+  /api:
+    get:
+      tags:
+        - API
+      summary: API page
+      responses:
+        '200':
+          description: Success
+  /data:
+    get:
+      tags:
+        - Employee Data
+      summary: Fetches data using employer fields and values
+      parameters:
+        - in: query
+          name: field1
+          type: string
+          required: true
+          description: >-
+            Employer fields and values.
+            Ex.{'field1':'employer_name','value1':'aarp'}
+          schema:
+            $ref: '#/components/schemas/field1'
+        - in: query
+          name: value1
+          type: string
+          required: true
+          description: >-
+            Employer fields and values.
+            Ex.{'field1':'employer_name','value1':'aarp'}
+          schema:
+            $ref: '#/components/schemas/value1' 
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/components/schemas/final_result'
+        '400':
+          description: Failed. Missing a field or value.
+components:
+  schemas:
+    field1:
+      properties:
+        title:
+          type: string
+          format: string
+    value1:
+      properties:
+        title:
+          type: string
+          format: string
+    final_result:
+      type: object
+      properties:
+        title:
+          type: string
+          format: string
+        CASE_NUMBER:
+          type: string
+          format: number
+        CASE_STATUS:
+          type: string
+          format: string
+        EMPLOYER_CITY:
+          type: string
+          format: string
+        EMPLOYER_NAME:
+          type: string
+          format: string
+        EMPLOYER_STATE:
+          type: string
+          format: string
+        FULL_TIME_POSITION:
+          type: string
+          format: string
+        JOB_TITLE:
+          type: string
+          format: string
+        PERIOD_OF_EMPLOYMENT_START_DATE:
+          type: string
+          format: number
+        PREVAILING_WAGE_1:
+          type: string
+          format: number
+        VISA_CLASS:
+          type: string
+          format: number
+
