@@ -14,15 +14,11 @@ from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
 from flask_restful import Api, Resource
 from backend.models import db, Salary
 from backend.helpers import SALARY_KEYS, QUERY_KEYS, STATES
-import random
+from backend.config import Config
 
 app = Flask(__name__)
 CORS(app)
-app.config[
-    "SQLALCHEMY_DATABASE_URI"
-] = "postgres://mtscouwjvpgsvj:d1df6ddc0071c78af5befa14e2fdf89b8faf6bfe58074d03c9345eed337b3cc9@ec2-52-202-66-191.compute-1.amazonaws.com:5432/d7fqshecacpm5u"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = "".join([chr(random.randint(65, 92)) for _ in range(50)])
+app.config.from_object(Config)
 
 jwt = JWTManager(app)
 db.app = app
