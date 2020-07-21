@@ -1,7 +1,7 @@
-from flask import Flask, jsonify, request, render_template, session
-from flask_graphql import GraphQLView
-from schema import schema
+from flasgger import Schema, Swagger, SwaggerView, fields, swag_from
+from flask import Flask, jsonify, render_template, request, session
 from flask_cors import CORS
+from flask_graphql import GraphQLView
 from flask_jwt_extended import (
     JWTManager,
     create_access_token,
@@ -9,18 +9,17 @@ from flask_jwt_extended import (
     get_raw_jwt,
     jwt_required,
 )
-from sqlalchemy import text
-from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
 from flask_restful import Api, Resource
-from models import db, Salary
-from helpers import SALARY_KEYS, QUERY_KEYS, STATES
-from secrets import SECRET_KEY
+from sqlalchemy import text
+
+from backend.config import Config
+from backend.helpers import QUERY_KEYS, SALARY_KEYS, STATES
+from backend.models import Salary, db
+from backend.schema import schema
 
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///../data/salary.sqlite"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.secret_key = SECRET_KEY
+app.config.from_object(Config)
 
 jwt = JWTManager(app)
 db.app = app
@@ -123,7 +122,9 @@ def table():
         db.or_(Salary.employer_city.like(fuzzy_query["city"])),
         db.or_(Salary.employer_state.like(fuzzy_query["state"])),
         db.or_(
-            db.extract("year", Salary.employment_start_date).like(fuzzy_query["year"])
+            db.cast(db.extract("year", Salary.employment_start_date), db.String).like(
+                fuzzy_query["year"]
+            )
         ),
     )
 

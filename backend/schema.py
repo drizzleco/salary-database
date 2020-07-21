@@ -1,8 +1,10 @@
 import graphene
 from graphene import relay
-from graphene_sqlalchemy import SQLAlchemyObjectType, SQLAlchemyConnectionField
-from models import db, Salary as SalaryModel
-from helpers import QUERY_KEYS
+from graphene_sqlalchemy import SQLAlchemyConnectionField, SQLAlchemyObjectType
+
+from backend.helpers import QUERY_KEYS
+from backend.models import Salary as SalaryModel
+from backend.models import db
 
 
 class Salary(SQLAlchemyObjectType):
@@ -47,9 +49,9 @@ class Query(graphene.ObjectType):
                 db.or_(SalaryModel.employer_city.like(fuzzy_query["city"])),
                 db.or_(SalaryModel.employer_state.like(fuzzy_query["state"])),
                 db.or_(
-                    db.extract("year", SalaryModel.employment_start_date).like(
-                        fuzzy_query["year"]
-                    )
+                    db.cast(
+                        db.extract("year", SalaryModel.employment_start_date), db.String
+                    ).like(fuzzy_query["year"])
                 ),
             )
             .order_by(db.asc(SalaryModel.employer_name))
