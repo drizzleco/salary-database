@@ -2,6 +2,11 @@ header {
   padding: 156px 0 100px;
 }
 
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
 ::-ms-clear {
   display: none;
 }
@@ -12,4 +17,14 @@ header {
   cursor: pointer;
   margin-left: -40px;
   z-index: 100;
+}
+
+.table-wrapper {
+  padding-bottom: 150px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
