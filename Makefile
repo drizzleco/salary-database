@@ -9,7 +9,8 @@ install:
 	#  backend installation
 	python3 -m venv .env; \
 	. .env/bin/activate; \
-	pip install -r requirements.txt;
+	pip install -r requirements.txt \
+	pip install . ;
 
 ### collect_2019_data - collect disclosure data for 2019 and save to db
 .PHONY: collect_2019_data
