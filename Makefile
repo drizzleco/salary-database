@@ -17,3 +17,9 @@ install:
 collect_2019_data:
 	. .env/bin/activate; \
 	cat data/salary_links.txt | xargs -n2 sh -c 'python data/data_to_db.py $$0 $$1'
+
+### lint - lint code
+.PHONY: lint
+lint:
+	isort -rc --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=88 backend/
+	black backend
