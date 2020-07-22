@@ -22,9 +22,9 @@ def upgrade():
         "query_index",
         "salary",
         [
+            "employer_name",
             "job_title",
             "employment_start_date",
-            "employer_name",
             "employer_city",
             "employer_state",
         ],

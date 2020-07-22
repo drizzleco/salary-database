@@ -5,6 +5,16 @@ db = SQLAlchemy()
 
 class Salary(db.Model):
     __tablename__ = "salary"
+    __table_args__ = (
+        db.Index(
+            "query_index",
+            "employer_name",
+            "job_title",
+            "employment_start_date",
+            "employer_city",
+            "employer_state",
+        ),
+    )
     case_number = db.Column(db.Text, primary_key=True)
     case_status = db.Column(db.Text)
     visa_class = db.Column(db.Text)
@@ -15,14 +25,3 @@ class Salary(db.Model):
     prevailing_wage = db.Column(db.Float)
     employer_city = db.Column(db.Text)
     employer_state = db.Column(db.Text)
-
-
-db.Index(
-    "query_index",
-    Salary.job_title,
-    Salary.employment_start_date,
-    Salary.employer_name,
-    Salary.employer_city,
-    Salary.employer_state,
-)
-
