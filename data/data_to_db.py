@@ -5,6 +5,8 @@ import os
 import wget
 from xlsx2csv import Xlsx2csv
 
+MIN_SALARY = 15080
+
 name = sys.argv[1]
 url = sys.argv[2]
 
@@ -53,6 +55,7 @@ cleaned_sheet = cleaned_sheet[cleaned_sheet["VISA_CLASS"] == "H-1B"]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["PREVAILING_WAGE"].notnull()]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["CASE_STATUS"] == "CERTIFIED"]
 cleaned_sheet = cleaned_sheet[cleaned_sheet["FULL_TIME_POSITION"] == "Y"]
+cleaned_sheet = cleaned_sheet[cleaned_sheet["PREVAILING_WAGE"] > MIN_SALARY]
 cleaned_sheet["EMPLOYMENT_START_DATE"] = pd.to_datetime(
     cleaned_sheet["EMPLOYMENT_START_DATE"]
 ).dt.date
