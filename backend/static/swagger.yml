@@ -8,7 +8,6 @@ servers:
   - url: /data
   - url: /table
   - url: /about
-  - url: /api
 tags:
   - name: Index
     description: Home page
@@ -18,8 +17,6 @@ tags:
     description: Returns table of employees
   - name: About
     description: About Salary Database app
-  - name: API
-    description: API
 paths:
   /:
     get:
@@ -29,8 +26,6 @@ paths:
       responses:
         '200':
           description: Success
-          schema:
-            $ref: '#/components/schemas/final_result'
   # /data:
   #   get:
   #     tags:
@@ -56,28 +51,46 @@ paths:
           type: string
           required: true
           description: >-
-            Employer fields and values.
-            Ex.{'field1':'employer_name','value1':'aarp'}
+            Max number of results to return
           schema:
-            $ref: '#/components/schemas/params'
+            $ref: '#/components/schemas/limit'
+        - in: query
+          name: offset
+          type: string
+          required: true
+          description: >-
+            Starting point of data
+          schema:
+            $ref: '#/components/schemas/offset'
+        - in: query
+          name: sort
+          type: string
+          required: true
+          description: >-
+            Column to sort data by. Default: prevailing_wage
+          schema:
+            $ref: '#/components/schemas/sort'
+        - in: query
+          name: order
+          type: string
+          required: true
+          description: >-
+            How to order column being sorted(asc or desc). Default: asc
+          schema:
+            $ref: '#/components/schemas/order'
       responses:
         '200':
-          description: Success
+          description: >-
+            Matched salary data in form of dict with keys:  
+                Total - total number of matched results
+                Rows - matched salary data in current page as a list
           schema:
-            $ref: '#/components/schemas/final_result'
+            $ref: '#/components/schemas/table_result'
   /about:
     get:
       tags:
         - About
       summary: About the Salary Database API
-      responses:
-        '200':
-          description: Success
-  /api:
-    get:
-      tags:
-        - API
-      summary: API page
       responses:
         '200':
           description: Success
@@ -92,44 +105,128 @@ paths:
           type: string
           required: true
           description: >-
-            Employer fields and values.
-            Ex.{'field1':'employer_name','value1':'aarp'}
+            Query employee data using employer information fields
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
           schema:
-            $ref: '#/components/schemas/field1'
+            $ref: '#/components/schemas/fields'
         - in: query
           name: value1
           type: string
           required: true
           description: >-
-            Employer fields and values.
-            Ex.{'field1':'employer_name','value1':'aarp'}
+            Value of employer information field
+            Ex. google
           schema:
-            $ref: '#/components/schemas/value1' 
+            $ref: '#/components/schemas/values' 
+        - in: query
+          name: field2
+          type: string
+          required: false
+          description: >-
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
+          schema:
+            $ref: '#/components/schemas/fields'
+        - in: query
+          name: value2
+          type: string
+          required: false
+          description: >-
+            Ex. California
+          schema:
+            $ref: '#/components/schemas/values' 
+        - in: query
+          name: field3
+          type: string
+          required: false
+          description: >-
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
+          schema:
+            $ref: '#/components/schemas/fields'
+        - in: query
+          name: value3
+          type: string
+          required: false
+          description: >-
+            Ex. Anaheim
+          schema:
+            $ref: '#/components/schemas/values' 
+        - in: query
+          name: field4
+          type: string
+          required: false
+          description: >-
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
+          schema:
+            $ref: '#/components/schemas/fields'
+        - in: query
+          name: value4
+          type: string
+          required: false
+          description: >-
+            Ex. true
+          schema:
+            $ref: '#/components/schemas/values' 
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/components/schemas/final_result'
+            $ref: '#/components/schemas/data'
         '400':
           description: Failed. Missing a field or value.
 components:
   schemas:
-    field1:
+    limit:
       properties:
         title:
           type: string
           format: string
-    value1:
+    offset:
       properties:
         title:
           type: string
           format: string
-    final_result:
+    sort:
+      properties:
+        title:
+          type: string
+          format: string
+    order:
+      properties:
+        title:
+          type: string
+          format: string
+    fields:
+      properties:
+        field1:
+          type: string
+          format: string
+        field2:
+          type: string
+          format: string
+        field3:
+          type: string
+          format: string
+        field4:
+          type: string
+          format: string
+    values:
+      properties:
+        value1:
+          type: string
+          format: string
+        value2:
+          type: string
+          format: string
+        value3:
+          type: string
+          format: string
+        value4:
+          type: string
+          format: string
+    
+    data:
       type: object
       properties:
-        title:
-          type: string
-          format: string
         CASE_NUMBER:
           type: string
           format: number
@@ -160,4 +257,10 @@ components:
         VISA_CLASS:
           type: string
           format: number
+    
+    table_result:
+      properties:
+        title:
+          type: string
+          format: string
 
