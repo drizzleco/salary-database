@@ -24,3 +24,8 @@ collect_2019_data:
 lint:
 	isort -rc --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=88 backend/
 	black backend
+
+### clean - delete data and database files
+.PHONY: clean
+clean:
+	rm data/*.sqlite data/*.csv data/*.xlsx
