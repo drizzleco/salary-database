@@ -8,14 +8,8 @@
 ## Setup
 
 1.  `make install`
-2.  `make collect_2019_data` to populate salary db with just 2019 data
-3.  add a secrets file
-
-    `backend/secrets.py`
-
-    ```python
-    SECRET_KEY = ""
-    ```
+2.  `make collect_2019_data` to populate salary db with just 2019 data(if using sqlite)
+3.  `docker-compose up --build` to build and start docker container(if using postgres)
 
 ## Info
 
@@ -24,7 +18,9 @@ To obtain the H1B data, go to the [site here](https://www.foreignlaborcert.dolet
 Currently, all the information exists in the data folder. I added the steps for moving information in the data ingestion notebook. We can probably automate that to make this idempotent.
 
 ## Feel free to access the GraphQL Viewer!
+
 Using https://salary-database.herokuapp.com/graphql, feel free to take a look at the schema and query the data. Here is an example input
+
 ```
 {
   salaries(limit: 10, employer: "AIRBNB", year:"2020"){
@@ -34,13 +30,23 @@ Using https://salary-database.herokuapp.com/graphql, feel free to take a look at
     prevailingWage
     employmentStartDate
   }
-}   
+}
 ```
-with the following link: [Query Link](https://salary-database.herokuapp.com/graphql?query=%7B%0A%20%20salaries(limit%3A%2010%2C%20employer%3A%20%22AIRBNB%22%2C%20year%3A%20%222020%22)%20%7B%0A%20%20%20%20caseNumber%0A%20%20%20%20employerName%0A%20%20%20%20jobTitle%0A%20%20%20%20prevailingWage%0A%20%20%20%20employmentStartDate%0A%20%20%7D%0A%7D%0A)
+
+with the following link: [Query Link](<https://salary-database.herokuapp.com/graphql?query=%7B%0A%20%20salaries(limit%3A%2010%2C%20employer%3A%20%22AIRBNB%22%2C%20year%3A%20%222020%22)%20%7B%0A%20%20%20%20caseNumber%0A%20%20%20%20employerName%0A%20%20%20%20jobTitle%0A%20%20%20%20prevailingWage%0A%20%20%20%20employmentStartDate%0A%20%20%7D%0A%7D%0A>)
 
 ## Production
 
-**Requirements**
+**Deploying to Heroku**
+
+To deploy Docker container to heroku:
+
+0. heroku create (one time step)
+1. heroku container:push web
+2. heroku container:release web
+3. heroku open
+
+**Pushing Salary Data from Local DB to Production DB**
 
 You'll need:
 

@@ -10,7 +10,8 @@ install:
 	python3 -m venv .env; \
 	. .env/bin/activate; \
 	pip install -r requirements.txt \
-	pip install . ;
+	pip install -e . &&\
+	python manage.py db upgrade;
 
 ### collect_2019_data - collect disclosure data for 2019 and save to db
 .PHONY: collect_2019_data
@@ -23,3 +24,8 @@ collect_2019_data:
 lint:
 	isort -rc --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=88 backend/
 	black backend
+
+### clean - delete data and database files
+.PHONY: clean
+clean:
+	rm data/*.sqlite data/*.csv data/*.xlsx
