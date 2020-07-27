@@ -37,7 +37,16 @@ with the following link: [Query Link](<https://salary-database.herokuapp.com/gra
 
 ## Production
 
-**Requirements**
+**Deploying to Heroku**
+
+To deploy Docker container to heroku:
+
+0. heroku create (one time step)
+1. heroku container:push web
+2. heroku container:release web
+3. heroku open
+
+**Pushing Salary Data from Local DB to Production DB**
 
 You'll need:
 
