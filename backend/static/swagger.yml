@@ -1,0 +1,266 @@
+openapi: 3.0.0
+info:
+  description: Salary Database
+  version: 1.0.0
+  title: Salary Database
+servers:
+  - url: /
+  - url: /data
+  - url: /table
+  - url: /about
+tags:
+  - name: Index
+    description: Home page
+  - name: Employee Data
+    description: Queries database for employers based on employer fields
+  - name: Table
+    description: Returns table of employees
+  - name: About
+    description: About Salary Database app
+paths:
+  /:
+    get:
+      tags:
+        - Index
+      summary: Directs user to home page
+      responses:
+        '200':
+          description: Success
+  # /data:
+  #   get:
+  #     tags:
+  #       - Employee Data
+  #     summary: Returns all employees in a list
+  #     responses:
+  #       '200':
+  #         description: Success
+  #         schema:
+  #           $ref: '#/components/schemas/final_result'
+  #       '400':
+  #         description: Error
+  #         schema:
+  #           $ref: '#/components/schemas/final_result'
+  /table:
+    get:
+      tags:
+        - Table
+      summary: Returns table of employees
+      parameters:
+        - in: query
+          name: limit
+          type: string
+          required: true
+          description: >-
+            Max number of results to return
+          schema:
+            $ref: '#/components/schemas/limit'
+        - in: query
+          name: offset
+          type: string
+          required: true
+          description: >-
+            Starting point of data
+          schema:
+            $ref: '#/components/schemas/offset'
+        - in: query
+          name: sort
+          type: string
+          required: true
+          description: >-
+            Column to sort data by. Default: prevailing_wage
+          schema:
+            $ref: '#/components/schemas/sort'
+        - in: query
+          name: order
+          type: string
+          required: true
+          description: >-
+            How to order column being sorted(asc or desc). Default: asc
+          schema:
+            $ref: '#/components/schemas/order'
+      responses:
+        '200':
+          description: >-
+            Matched salary data in form of dict with keys:  
+                Total - total number of matched results
+                Rows - matched salary data in current page as a list
+          schema:
+            $ref: '#/components/schemas/table_result'
+  /about:
+    get:
+      tags:
+        - About
+      summary: About the Salary Database API
+      responses:
+        '200':
+          description: Success
+  /data:
+    get:
+      tags:
+        - Employee Data
+      summary: Fetches data using employer fields and values
+      parameters:
+        - in: query
+          name: field1
+          type: string
+          required: true
+          description: >-
+            Query employee data using employer information fields
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
+          schema:
+            $ref: '#/components/schemas/fields'
+        - in: query
+          name: value1
+          type: string
+          required: true
+          description: >-
+            Value of employer information field
+            Ex. google
+          schema:
+            $ref: '#/components/schemas/values' 
+        - in: query
+          name: field2
+          type: string
+          required: false
+          description: >-
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
+          schema:
+            $ref: '#/components/schemas/fields'
+        - in: query
+          name: value2
+          type: string
+          required: false
+          description: >-
+            Ex. California
+          schema:
+            $ref: '#/components/schemas/values' 
+        - in: query
+          name: field3
+          type: string
+          required: false
+          description: >-
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
+          schema:
+            $ref: '#/components/schemas/fields'
+        - in: query
+          name: value3
+          type: string
+          required: false
+          description: >-
+            Ex. Anaheim
+          schema:
+            $ref: '#/components/schemas/values' 
+        - in: query
+          name: field4
+          type: string
+          required: false
+          description: >-
+            Ex. employer_name, employer_state, employer_city, prevailing_wage
+          schema:
+            $ref: '#/components/schemas/fields'
+        - in: query
+          name: value4
+          type: string
+          required: false
+          description: >-
+            Ex. true
+          schema:
+            $ref: '#/components/schemas/values' 
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/components/schemas/data'
+        '400':
+          description: Failed. Missing a field or value.
+components:
+  schemas:
+    limit:
+      properties:
+        title:
+          type: string
+          format: string
+    offset:
+      properties:
+        title:
+          type: string
+          format: string
+    sort:
+      properties:
+        title:
+          type: string
+          format: string
+    order:
+      properties:
+        title:
+          type: string
+          format: string
+    fields:
+      properties:
+        field1:
+          type: string
+          format: string
+        field2:
+          type: string
+          format: string
+        field3:
+          type: string
+          format: string
+        field4:
+          type: string
+          format: string
+    values:
+      properties:
+        value1:
+          type: string
+          format: string
+        value2:
+          type: string
+          format: string
+        value3:
+          type: string
+          format: string
+        value4:
+          type: string
+          format: string
+    
+    data:
+      type: object
+      properties:
+        CASE_NUMBER:
+          type: string
+          format: number
+        CASE_STATUS:
+          type: string
+          format: string
+        EMPLOYER_CITY:
+          type: string
+          format: string
+        EMPLOYER_NAME:
+          type: string
+          format: string
+        EMPLOYER_STATE:
+          type: string
+          format: string
+        FULL_TIME_POSITION:
+          type: string
+          format: string
+        JOB_TITLE:
+          type: string
+          format: string
+        PERIOD_OF_EMPLOYMENT_START_DATE:
+          type: string
+          format: number
+        PREVAILING_WAGE_1:
+          type: string
+          format: number
+        VISA_CLASS:
+          type: string
+          format: number
+    
+    table_result:
+      properties:
+        title:
+          type: string
+          format: string
+

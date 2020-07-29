@@ -1,5 +1,6 @@
+
 from flasgger import Schema, Swagger, SwaggerView, fields, swag_from
-from flask import Flask, jsonify, render_template, request, session
+from flask import Flask, jsonify, request, render_template, session, send_from_directory, Blueprint
 from flask_cors import CORS
 from flask_graphql import GraphQLView
 from flask_jwt_extended import (
@@ -16,6 +17,10 @@ from backend.config import Config
 from backend.helpers import QUERY_KEYS, SALARY_KEYS, STATES
 from backend.models import Salary, db
 from backend.schema import schema
+from flask_sqlalchemy import SQLAlchemy
+from flasgger import Swagger, swag_from, SwaggerView, Schema, fields
+from flask_swagger_ui import get_swaggerui_blueprint
+
 
 app = Flask(__name__)
 CORS(app)
@@ -27,8 +32,24 @@ db.init_app(app)
 swagger = Swagger(app)
 api = Api(app)
 
+@app.route('/static/<path:path>/')
+def send_static(path):
+    return send_from_directory('static', path)
 
-@swag_from("spect_dict.txt", validation=True)
+SWAGGER_URL = '/swagger'
+API_URL = '/static/swagger.yml'
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Salary Database"
+    }
+)
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+request_api = Blueprint('request_api', __name__)
+app.register_blueprint(request_api)
+
+
 @app.route("/", methods=["GET"])
 def home():
     """
@@ -46,7 +67,7 @@ def home():
     return render_template("index.html", states=STATES, form_values=form_values)
 
 
-@app.route("/data/", methods=["GET"])
+@app.route("/data", methods=["GET"])
 def employer():
     params = []
     for d in range(0, 4):
