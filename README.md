@@ -1,5 +1,8 @@
 # Salary Database
 
+[![Build status](https://badge.buildkite.com/1728e3c9006224625e2748c1c7e17f2c1f36f6c444e8dd9e71.svg)](https://buildkite.com/drizzle/salary-database)
+[![codecov](https://codecov.io/gh/drizzleco/salary-database/branch/master/graph/badge.svg?token=TXTAUEBCXS)](https://codecov.io/gh/drizzleco/salary-database)
+
 ## Technology
 
 - sqlite3
