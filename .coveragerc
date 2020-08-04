@@ -1,7 +1,7 @@
 [report]
-omit = *tests*
-        *.tox*
+include = *backend*
+omit = *tox*
 
 [run]
-omit = *tests*
-        *.tox*
+include = *backend*
+omit = *tox*

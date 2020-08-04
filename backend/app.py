@@ -1,6 +1,13 @@
-
 from flasgger import Schema, Swagger, SwaggerView, fields, swag_from
-from flask import Flask, jsonify, request, render_template, session, send_from_directory, Blueprint
+from flask import (
+    Flask,
+    jsonify,
+    request,
+    render_template,
+    session,
+    send_from_directory,
+    Blueprint,
+)
 from flask_cors import CORS
 from flask_graphql import GraphQLView
 from flask_jwt_extended import (
@@ -32,21 +39,19 @@ db.init_app(app)
 swagger = Swagger(app)
 api = Api(app)
 
-@app.route('/static/<path:path>/')
-def send_static(path):
-    return send_from_directory('static', path)
 
-SWAGGER_URL = '/swagger'
-API_URL = '/static/swagger.yml'
+@app.route("/static/<path:path>/")
+def send_static(path):
+    return send_from_directory("static", path)
+
+
+SWAGGER_URL = "/swagger"
+API_URL = "/static/swagger.yml"
 swaggerui_blueprint = get_swaggerui_blueprint(
-    SWAGGER_URL,
-    API_URL,
-    config={
-        'app_name': "Salary Database"
-    }
+    SWAGGER_URL, API_URL, config={"app_name": "Salary Database"}
 )
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
-request_api = Blueprint('request_api', __name__)
+request_api = Blueprint("request_api", __name__)
 app.register_blueprint(request_api)
 
 
@@ -74,10 +79,7 @@ def employer():
         index = str(d + 1)
         field = request.args.get("field" + index, None)
         value = request.args.get("value" + index, None)
-        if field and value:
-            params.append(field.upper())
-            params.append(value.upper())
-        elif not (field or value):
+        if not field or value:
             params.append("''")
             params.append("")
         else:
