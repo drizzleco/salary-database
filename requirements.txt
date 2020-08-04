@@ -90,7 +90,6 @@ QtPy==1.9.0
 regex==2020.6.8
 requests==2.24.0
 Rx==1.6.1
--e git+https://github.com/drizzleco/salary-database.git@00bf5e03203555a22d2f6b9d5b81ce2dba5d1e27#egg=salary_database
 Send2Trash==1.5.0
 singledispatch==3.4.0.3
 six==1.15.0
