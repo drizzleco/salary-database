@@ -1,0 +1,7 @@
+[report]
+include = *backend*
+omit = *tox*
+
+[run]
+include = *backend*
+omit = *tox*
